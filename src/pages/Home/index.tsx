@@ -1,42 +1,48 @@
-import { NewTaskForm } from "./components/NewTaskForm"
+import { NewCycleForm } from "./components/NewCycleForm"
 import * as C from "./styles"
 
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form"
 
 import zod from "zod"
 import { zodResolver } from "@hookform/resolvers/zod/src"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { CyclesContext } from "../../contexts/CyclesContext"
 
-const newTaskFormValidationSchema = zod.object({
-  task: zod.string().min(1, "Informe a tarefa"),
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, { message: "Informe a tarefa" }),
   minutesAmount: zod.number().min(5).max(120)
 })
 
-type NewTaskFormData = zod.infer<typeof newTaskFormValidationSchema>
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 export function Home() {
-  const newTaskForm = useForm<NewTaskFormData>({
-    resolver: zodResolver(newTaskFormValidationSchema),
+  const { createNewCycle } = useContext(CyclesContext)
+
+  const newCycleForm = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: "",
       minutesAmount: 0
     }
   })
 
-  const { watch, handleSubmit } = newTaskForm
+  const { watch, handleSubmit, reset } = newCycleForm
 
-  const task = watch("task")
+  const cycle = watch("task")
 
-  function handleCreateNewTask(data: NewTaskFormData) {
+  function handleCreateNewTask(data: NewCycleFormData) {
     console.log("entrou")
     console.log(data)
+
+    createNewCycle(data)
+    reset()
   }
 
   return (
     <C.HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewTask)}>
-        <FormProvider {...newTaskForm}>
-          <NewTaskForm />
+        <FormProvider {...newCycleForm}>
+          <NewCycleForm />
         </FormProvider>
         <C.ButtonInput type="submit">Criar Task</C.ButtonInput>
       </form>

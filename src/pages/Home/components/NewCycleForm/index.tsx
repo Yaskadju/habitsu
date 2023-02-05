@@ -1,8 +1,16 @@
 import * as C from "./styles"
 import { useFormContext } from "react-hook-form"
 
-export function NewTaskForm() {
-  const { register } = useFormContext()
+interface IFormInputs {
+  task: string
+  minutesAmount: number
+}
+
+export function NewCycleForm() {
+  const {
+    register,
+    formState: { errors }
+  } = useFormContext<IFormInputs>()
 
   return (
     <C.FormContainer>
@@ -20,6 +28,8 @@ export function NewTaskForm() {
           <option value="projeto2" />
           <option value="projeto3" />
         </datalist>
+
+        <span className="error">{errors && errors?.task?.message}</span>
       </C.TaskLabel>
 
       <C.TaskLabel htmlFor="">

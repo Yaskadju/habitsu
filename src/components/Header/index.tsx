@@ -2,6 +2,7 @@ import * as C from "./styles"
 import logoIgnite from "../../assets/logo-ignite.svg"
 import { Timer, Scroll } from "phosphor-react"
 import { NavLink } from "react-router-dom"
+import { Countdown } from "../../pages/Home/components/Countdown"
 
 export function Header() {
   return (
@@ -15,7 +16,7 @@ export function Header() {
           <Scroll size={24} />
         </NavLink>
       </nav> */}
-      <div>Header</div>
+      <Countdown />
     </C.HeaderContainer>
   )
 }
